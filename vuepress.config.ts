@@ -34,8 +34,8 @@ export default defineUserConfig({
     {
       mountPath: "/video",
       analysis: huggingFaceDatasetsAnalysis({
-        userName: "jons1852",
-        datasetsName: "video",
+        userName: "mrid124",
+        datasetsName: "mp4",
         branchName: "main",
         path: "/",
         //最大深度,如果文件夹有很多层最大递归解析多少层，默认10
