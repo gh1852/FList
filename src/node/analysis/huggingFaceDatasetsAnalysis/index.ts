@@ -23,7 +23,7 @@ async function huggingFaceDatasetsAnalysisTree(fileTree:Folder,userName:string,d
             const fileName = pathArray.pop() as string;
             const rpNum = rootPath.split("/").length;
             pathArray.splice(0,rpNum);
-            const url = `https://huggingface.co/datasets/${userName}/${datasetsName}/resolve/${branchName}/${jsonDatum.path}?download=true`;
+            const url = `https://hf-mirror.com/datasets/${userName}/${datasetsName}/resolve/${branchName}/${jsonDatum.path}?download=true`;
             let addThisFile = true;
             if(fileName.toUpperCase()=="README.MD"){
                 const fileDir = getFileByPath(fileTree,pathArray);
