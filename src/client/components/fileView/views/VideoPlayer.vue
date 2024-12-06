@@ -6,6 +6,7 @@ import {putNotification} from "../../../js/notification/notification.js";
 
 
 const props = defineProps<{file:PageFileData}>()
+console.log(props);
 
 let artPlayer:Artplayer|null = null;
 
