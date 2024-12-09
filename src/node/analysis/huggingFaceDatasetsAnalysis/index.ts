@@ -23,7 +23,18 @@ async function huggingFaceDatasetsAnalysisTree(fileTree:Folder,userName:string,d
             const fileName = pathArray.pop() as string;
             const rpNum = rootPath.split("/").length;
             pathArray.splice(0,rpNum);
-            const url = `https://huggingface.co/datasets/${userName}/${datasetsName}/resolve/${branchName}/${jsonDatum.path}?download=true`;
+            let url = `https://huggingface.co/datasets/${userName}/${datasetsName}/resolve/${branchName}/${jsonDatum.path}?download=true`;
+
+            try{
+                const response = await (await fetch(url,{ redirect: 'manual' }));
+                if (response.status === 302) {
+                    url = response.headers.get('Location').replace('cdn-lfs-us-1.hf.co','cdn-lfs-us-1.hf-mirror.com');
+                }
+                console.log(url);
+            }catch (error){
+                throw new Error("HuggingFace Api 请求失败! 请检查网络是否畅通。"+error);
+            }
+
             let addThisFile = true;
             if(fileName.toUpperCase()=="README.MD"){
                 const fileDir = getFileByPath(fileTree,pathArray);

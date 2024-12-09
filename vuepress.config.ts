@@ -41,7 +41,7 @@ export default defineUserConfig({
         //最大深度,如果文件夹有很多层最大递归解析多少层，默认10
         maxDeep: 3
       }),
-      downProxy:cloudflarePagesDownProxy(),
+      // downProxy:cloudflarePagesDownProxy(),
     }
   ])
 })
