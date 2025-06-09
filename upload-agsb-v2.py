@@ -804,7 +804,6 @@ def get_tunnel_domain():
     return None
 
 # 上传订阅到API服务器
-UPLOAD_API = "https://file.zmkk.fun/api/upload"  # 文件上传API
 
 def upload_to_api(subscription_content, user_name):
     """
@@ -813,18 +812,6 @@ def upload_to_api(subscription_content, user_name):
     :param user_name: 用户名
     :return: 成功返回True，失败返回False
     """
-    try:
-        import requests
-    except ImportError:
-        print("检测到未安装requests库，正在尝试安装...")
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
-            import requests
-            print("requests库安装成功")
-        except Exception as e:
-            print(f"安装requests库失败: {e}")
-            print("请手动执行: pip install requests")
-            return False
     try:
         write_debug_log("开始上传订阅内容到API服务器")
         # 文件名直接用用户名
@@ -839,47 +826,7 @@ def upload_to_api(subscription_content, user_name):
             print(f"创建临时文件失败: {e}")
             return False
         # 构建multipart表单数据
-        try:
-            files = {
-                'file': (file_name, open(str(temp_file), 'rb'))
-            }
-            write_debug_log(f"正在上传文件到API: {UPLOAD_API}")
-            response = requests.post(UPLOAD_API, files=files)
-            files['file'][1].close()
-            if os.path.exists(str(temp_file)):
-                os.remove(str(temp_file))
-            if response.status_code == 200:
-                try:
-                    result = response.json()
-                    if result.get('success') or result.get('url'):
-                        url = result.get('url', '')
-                        write_debug_log(f"上传成功，URL: {url}")
-                        print(f"\033[36m│ \033[32m订阅已成功上传，URL: {url}\033[0m")
-                        url_file = INSTALL_DIR / "subscription_url.txt"
-                        with open(str(url_file), 'w') as f:
-                            f.write(url)
-                        return True
-                    else:
-                        write_debug_log(f"API返回错误: {result}")
-                        print(f"API返回错误: {result}")
-                        return False
-                except Exception as e:
-                    write_debug_log(f"解析API响应失败: {e}")
-                    print(f"解析API响应失败: {e}")
-                    return False
-            else:
-                write_debug_log(f"上传失败，状态码: {response.status_code}")
-                print(f"上传失败，状态码: {response.status_code}")
-                return False
-        except Exception as e:
-            write_debug_log(f"上传过程中出错: {e}")
-            print(f"上传过程中出错: {e}")
-            if os.path.exists(str(temp_file)):
-                try:
-                    os.remove(str(temp_file))
-                except:
-                    pass
-            return False
+        return True
     except Exception as e:
         write_debug_log(f"上传订阅到API服务器失败: {e}")
         print(f"上传订阅到API服务器失败: {e}")
